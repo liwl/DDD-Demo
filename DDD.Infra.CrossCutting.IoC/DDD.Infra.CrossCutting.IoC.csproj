@@ -5,10 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DDD.Application\DDD.Application.csproj" />
     <ProjectReference Include="..\DDD.Domain.Core\DDD.Domain.Core.csproj" />
     <ProjectReference Include="..\DDD.Domain\DDD.Domain.csproj" />
     <ProjectReference Include="..\DDD.Infrastruct.Data\DDD.Infrastruct.Data.csproj" />
+    <ProjectReference Include="..\Equinox.Infra.CrossCutting.Bus\DDD.Infra.CrossCutting.Bus.csproj" />
   </ItemGroup>
 
 </Project>

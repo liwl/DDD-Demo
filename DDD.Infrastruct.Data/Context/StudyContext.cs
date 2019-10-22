@@ -21,10 +21,15 @@ namespace DDD.Infrastruct.Data.Context
         public StudyContext(IHostingEnvironment env)
         {
             _env = env;
+
+         
+         
         }
 
 
         public DbSet<Student> Students { get; set; }
+
+        public DbSet<Customer> Customers { get; set; }
 
         /// <summary>
         /// 重写自定义Map配置
@@ -32,6 +37,9 @@ namespace DDD.Infrastruct.Data.Context
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Customer>().ToTable("Customer");
+
+
             modelBuilder.ApplyConfiguration(new StudentMap());
 
             base.OnModelCreating(modelBuilder);
