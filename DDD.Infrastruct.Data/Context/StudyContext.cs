@@ -50,7 +50,7 @@ namespace DDD.Infrastruct.Data.Context
                 .Build();
 
             // 定义要使用的数据库
-            optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseMySQL(config.GetConnectionString("MySqlConnectionString"));
         }
     }
 }
