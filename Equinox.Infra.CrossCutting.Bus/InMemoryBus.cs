@@ -1,5 +1,6 @@
 ﻿using DDD.Domain.Core.Bus;
 using DDD.Domain.Core.Commands;
+using DDD.Domain.Core.Events;
 using MediatR;
 using System;
 using System.Threading.Tasks;
@@ -13,9 +14,11 @@ namespace DDD.Infra.CrossCutting.Bus
     {
         //构造函数注入
         private readonly IMediator _mediator;
+        private readonly IEventStore _eventStore;
 
-        public InMemoryBus(IMediator mediator)
+        public InMemoryBus(IEventStore eventStore, IMediator mediator)
         {
+            _eventStore = eventStore;
             _mediator = mediator;
         }
 
@@ -31,5 +34,18 @@ namespace DDD.Infra.CrossCutting.Bus
             return _mediator.Send(command);//这里要注意下 command 对象
         }
 
+        /// <summary>
+        /// 引发事件的实现方法
+        /// </summary>
+        /// <typeparam name="T">泛型 继承 Event：INotification</typeparam>
+        /// <param name="event">事件模型，比如StudentRegisteredEvent</param>
+        /// <returns></returns>
+        public Task RaiseEvent<T>(T @event) where T : Event
+        {
+            if (!@event.MessageType.Equals("DomainNotification"))
+                _eventStore?.Save(@event);
+
+            return _mediator.Publish(@event);
+        }
     }
 }

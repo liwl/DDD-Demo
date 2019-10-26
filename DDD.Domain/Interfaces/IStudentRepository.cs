@@ -7,6 +7,6 @@ namespace DDD.Domain.Interfaces
 {
     public interface IStudentRepository : IRepository<Student>
     {
-     
+        Student GetByEmail(string email);
     }
 }

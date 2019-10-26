@@ -1,6 +1,8 @@
 ﻿using DDD.Domain.Core.Bus;
 using DDD.Domain.Core.Commands;
+using DDD.Domain.Core.Notifications;
 using DDD.Domain.Interfaces;
+using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,25 @@ namespace DDD.Domain.CommandHandlers
         // 注入缓存，用来存储错误信息（目前是错误方法，以后用领域通知替换）
         private IMemoryCache _cache;
 
+        private readonly DomainNotificationHandler _notifications;
         /// <summary>
         /// 构造函数注入
         /// </summary>
         /// <param name="uow"></param>
         /// <param name="bus"></param>
         /// <param name="cache"></param>
-        public CommandHandler(IUnitOfWork uow, IMediatorHandler bus, IMemoryCache cache)
+        public CommandHandler(IUnitOfWork uow, IMediatorHandler bus, INotificationHandler<DomainNotification> notifications)
         {
             _uow = uow;
+            _notifications = (DomainNotificationHandler)notifications;
             _bus = bus;
-            _cache = cache;
         }
 
         protected void NotifyValidationErrors(Command message)
         {
             foreach (var error in message.ValidationResult.Errors)
             {
-                //_bus.RaiseEvent(new DomainNotification(message.MessageType, error.ErrorMessage));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, error.ErrorMessage));
             }
         }
 
@@ -47,8 +50,10 @@ namespace DDD.Domain.CommandHandlers
         //如果有错误，下一步会在这里添加领域通知
         public bool Commit()
         {
+            if (_notifications.HasNotifications()) return false;
             if (_uow.Commit()) return true;
 
+            _bus.RaiseEvent(new DomainNotification("Commit", "We had a problem during saving your data."));
             return false;
         }
     }

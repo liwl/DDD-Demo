@@ -9,19 +9,17 @@ namespace DDD.Domain.Commands
     /// 注册一个添加 Student 命令
     /// 基础抽象学生命令模型
     /// </summary>
-    public class UpdateStudentCommand : StudentCommand
+    public class RemoveStudentCommand : StudentCommand
     {
-        public UpdateStudentCommand(Guid id, string name, string email, DateTime birthDate)
+        public RemoveStudentCommand(Guid id)
         {
             Id = id;
-            Name = name;
-            Email = email;
-            BirthDate = birthDate;
+            //AggregateId = id;
         }
 
         public override bool IsValid()
         {
-            ValidationResult = new UpdateCustomerCommandValidation().Validate(this);
+            ValidationResult = new RemoveStudentCommandValidation().Validate(this);
             return ValidationResult.IsValid;
         }
     }

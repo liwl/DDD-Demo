@@ -1,0 +1,7 @@
+﻿CommandHandlers -- 命令处理程序
+Commands -- 命令模型
+EventHandlers -- 事件处理程序
+Events -- 领域事件模型
+Interfaces -- 仓储接口
+Models -- 领域模型（包含数据库DBSet）
+Validations -- 领域模型验证

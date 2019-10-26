@@ -7,10 +7,10 @@ namespace DDD.Application.Interfaces
 {
    public interface IStudentAppService : IDisposable
     {
-        void Register(StudentViewModel customerViewModel);
+        void Register(StudentViewModel studentViewModel);
         IEnumerable<StudentViewModel> GetAll();
         StudentViewModel GetById(Guid id);
-        void Update(StudentViewModel customerViewModel);
+        void Update(StudentViewModel studentViewModel);
         void Remove(Guid id);
         IList<StudentViewModel> GetAllHistory(Guid id);
     }
